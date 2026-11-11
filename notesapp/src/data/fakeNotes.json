@@ -1,0 +1,74 @@
+[
+  {
+    "noteId": "1",
+    "noteDetails": "Pick up dry cleaning before Friday, ask about the stain on the blue jacket.",
+    "noteCreatedDate": "2026-08-14T09:12:00Z",
+    "noteUpdatedDate": "2026-08-14T09:12:00Z",
+    "noteIsActive": true,
+    "noteAIReviewed": false,
+    "noteAIPriority": "",
+    "noteAITitle": "",
+    "noteAIDetails": "",
+    "noteAICategory": ""
+  },
+  {
+    "noteId": "2",
+    "noteDetails": "Call the accountant about the Q3 invoice mismatch, invoice #4471 doesn't match the bank statement total. Need to resolve before end of month otherwise the reconciliation will be off for the quarterly report.",
+    "noteCreatedDate": "2026-08-12T14:30:00Z",
+    "noteUpdatedDate": "2026-08-12T15:02:00Z",
+    "noteIsActive": true,
+    "noteAIReviewed": true,
+    "noteAIPriority": "High",
+    "noteAITitle": "Resolve invoice #4471 mismatch",
+    "noteAIDetails": "Contact accountant about a discrepancy between invoice #4471 and the bank statement. Must be fixed before month-end reconciliation.",
+    "noteAICategory": "Finance"
+  },
+  {
+    "noteId": "3",
+    "noteDetails": "Renew car registration, expires end of September.",
+    "noteCreatedDate": "2026-08-10T08:00:00Z",
+    "noteUpdatedDate": "2026-08-16T10:45:00Z",
+    "noteIsActive": true,
+    "noteAIReviewed": true,
+    "noteAIPriority": "Medium",
+    "noteAITitle": "Renew car registration",
+    "noteAIDetails": "Vehicle registration expires end of September and needs to be renewed before then.",
+    "noteAICategory": "Admin"
+  },
+  {
+    "noteId": "4",
+    "noteDetails": "Idea: build a small dashboard for tracking home energy usage against last year.",
+    "noteCreatedDate": "2026-08-18T20:15:00Z",
+    "noteUpdatedDate": "2026-08-18T20:15:00Z",
+    "noteIsActive": true,
+    "noteAIReviewed": false,
+    "noteAIPriority": "",
+    "noteAITitle": "",
+    "noteAIDetails": "",
+    "noteAICategory": ""
+  },
+  {
+    "noteId": "5",
+    "noteDetails": "Book dentist checkup, it's been over a year.",
+    "noteCreatedDate": "2026-07-30T11:00:00Z",
+    "noteUpdatedDate": "2026-08-05T09:20:00Z",
+    "noteIsActive": false,
+    "noteAIReviewed": true,
+    "noteAIPriority": "Low",
+    "noteAITitle": "Book dentist checkup",
+    "noteAIDetails": "Schedule a routine dental checkup, overdue by more than a year.",
+    "noteAICategory": "Health"
+  },
+  {
+    "noteId": "6",
+    "noteDetails": "Water the office plants and check the humidity sensor readings from last week.",
+    "noteCreatedDate": "2026-08-19T07:40:00Z",
+    "noteUpdatedDate": "2026-08-19T07:40:00Z",
+    "noteIsActive": true,
+    "noteAIReviewed": false,
+    "noteAIPriority": "",
+    "noteAITitle": "",
+    "noteAIDetails": "",
+    "noteAICategory": ""
+  }
+]

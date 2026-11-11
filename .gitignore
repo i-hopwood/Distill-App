@@ -1,0 +1,8 @@
+# Firebase tool log (holds email and username)
+firebase-debug.log
+
+# Firebase deploy cache
+notesapp/.firebase/
+
+# Local tool settings
+notesapp/.claude/

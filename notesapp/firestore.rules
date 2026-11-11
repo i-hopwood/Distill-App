@@ -1,0 +1,83 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Explicit allow-list: even if a stranger discovers the public web API key
+    // and self-registers via Firebase Auth's API directly (bypassing the app's
+    // UI, which has no sign-up button), they still can't touch any data unless
+    // their uid has a doc here. Managed only via the Admin SDK - never client
+    // writable - so publishing this app doesn't open the door to registration.
+    function isAllowed() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/allowedUsers/$(request.auth.uid));
+    }
+
+    match /allowedUsers/{uid} {
+      // A user may check only their own entry (to show an access-denied
+      // screen client-side) - never anyone else's, and never write.
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /notes/{noteId} {
+
+      function isOwner(uid) {
+        return request.auth != null && request.auth.uid == uid;
+      }
+
+      allow read: if isAllowed() && isOwner(resource.data.userId);
+
+      // Only an allow-listed author can create their own note, and only in the
+      // shape the app actually produces - empty/false AI fields at creation
+      // time, so a client can never fake an AI result up front.
+      allow create: if isAllowed()
+        && isOwner(request.resource.data.userId)
+        && request.resource.data.noteDetails is string
+        && request.resource.data.noteDetails.size() > 0
+        && request.resource.data.noteDetails.size() <= 4000
+        && request.resource.data.noteIsActive == true
+        && request.resource.data.noteAIReviewed == false
+        && request.resource.data.noteAITitle == ''
+        && request.resource.data.noteAIDetails == ''
+        && request.resource.data.noteAIPriority == ''
+        && request.resource.data.noteAICategory == '';
+
+      // Clients may flip noteIsActive (mark complete / reopen). Every other
+      // field - note text, ownership, and all AI fields - must stay
+      // byte-for-byte identical. Only the backend poller (via the Admin SDK,
+      // which bypasses these rules) can write AI results.
+      allow update: if isAllowed()
+        && isOwner(resource.data.userId)
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.noteDetails == resource.data.noteDetails
+        && request.resource.data.noteAITitle == resource.data.noteAITitle
+        && request.resource.data.noteAIDetails == resource.data.noteAIDetails
+        && request.resource.data.noteAIPriority == resource.data.noteAIPriority
+        && request.resource.data.noteAICategory == resource.data.noteAICategory
+        && request.resource.data.noteAIReviewed == resource.data.noteAIReviewed
+        && request.resource.data.noteCreatedDate == resource.data.noteCreatedDate
+        && request.resource.data.noteIsActive is bool;
+
+      // OR: clients may edit the original note text, which resets it back to
+      // unreviewed (empty AI fields) so the poller picks it up and reprocesses
+      // it - same create-time shape validation, so a client still can't fake
+      // an AI result while editing.
+      allow update: if isAllowed()
+        && isOwner(resource.data.userId)
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.noteDetails is string
+        && request.resource.data.noteDetails.size() > 0
+        && request.resource.data.noteDetails.size() <= 4000
+        && request.resource.data.noteAIReviewed == false
+        && request.resource.data.noteAITitle == ''
+        && request.resource.data.noteAIDetails == ''
+        && request.resource.data.noteAIPriority == ''
+        && request.resource.data.noteAICategory == ''
+        && request.resource.data.noteCreatedDate == resource.data.noteCreatedDate
+        && request.resource.data.noteIsActive is bool;
+
+      // Notes are flagged completed, never deleted, per the app's design.
+      allow delete: if false;
+    }
+  }
+}
